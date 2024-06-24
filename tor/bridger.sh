@@ -16,15 +16,19 @@ do
 done
 
 # Add "Bridges" prefix to each non-empty line
-prefixed_input=$(echo -e "$input" | sed '/./ s/^/Bridges /')
+prefixed_input=$(echo -e "$input" | sed '/./ s/^/Bridge /')
 
 
 if [ ! -f "$PREFIX/etc/tor/torrcb" ]; then
     cp "$PREFIX/etc/tor/torrc" "$PREFIX/etc/tor/torrcb"
 fi
 
-echo "UseBridges 1" >> $PREFIX/etc/tor/torrc
+echo "UseBridges 1" > $PREFIX/etc/tor/torrc
 echo "" >> $PREFIX/etc/tor/torrc
+
+echo "ClientTransportPlugin obfs4 exec /data/data/com.termux/files/usr/bin/obfs4proxy" >> $PREFIX/etc/tor/torrc
+echo "" >> $PREFIX/etc/tor/torrc
+
 echo -e "$prefixed_input"  >> $PREFIX/etc/tor/torrc
 
 echo -e "\nBridges saved to $PREFIX/etc/tor/torrc\nDone !\n"
